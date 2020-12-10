@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -20,7 +21,6 @@ public class Task {
     private Boolean isComplete;
     private Date createDate;
     private Date updateDate;
-
-
+    private Long parentI;
 
 }
