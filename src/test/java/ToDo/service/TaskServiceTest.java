@@ -92,59 +92,12 @@ public class TaskServiceTest {
     }
     //Обновление и удаление самостоятельно
 
-   @Test
-    public void saveTest(){
 
-        when(taskRepo.save(task)).thenReturn(task);
-        when(taskRepo.findById(100L)).thenReturn(Optional.of(task));
-
-        Task taskTest = taskService.save(task,100L);
-
-        assertThat(taskTest, equalTo(task));
-   }
-   @Test
-   public void saveTestIfTaskIsEmpty(){
-       when(taskRepo.findById(100L)).thenReturn(Optional.empty());
-
-       try {
-           Task taskTest = taskService.save(task,100L);
-       }
-       catch (NotFoundException e){
-           System.out.println(e.getMessage());
-           assertThat(e.getMessage(),equalTo("Not Found: "+100L));
-           return;
-       }
-       catch (Throwable e){
-           fail(e.getMessage());
-       }
-       fail("Метод завершился без захода в блок try");
-
-   }
-   @Test
-   public void saveTestIsCalled(){
-        when(taskRepo.save(task)).thenReturn(task);
-        when(taskRepo.findById(100L)).thenReturn(Optional.of(task));
-
-        Task taskTest = taskService.save(task,100L);
-
-        verify(taskRepo, times(1)).save(task);
-   }
-   @Test
-    public void saveTestCheckCurrentDate(){
-
-        when(taskRepo.save(task)).thenReturn((task));
-        when(taskRepo.findById(100L)).thenReturn(Optional.of(task));
-
-        Task taskTest = taskService.save(task, 100L);
-
-        Calendar calendar = new GregorianCalendar();
-        calendar.add(Calendar.SECOND,0);
-        assertThat(calendar.getTime(),greaterThan(taskTest.getUpdateDate()));
-   }
    @Test
     public void deleteTest(){
 
         doNothing().when(taskRepo).deleteById(100L);
+        when(taskRepo.findById(100L)).thenReturn(Optional.ofNullable(task));
 
         taskService.delete(100L);
 
